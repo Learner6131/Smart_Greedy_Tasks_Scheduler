@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
 import { Subtask } from "@/types/types";
 
-// ✅ PUT: Update task status and sync subtasks
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
@@ -16,7 +15,6 @@ export async function PUT(
     if (!task)
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
 
-    // ✅ If task is marked as completed, mark all subtasks as completed too
     if (body.status === "completed") {
       task.subtasks = task.subtasks.map((sub: Subtask) => ({
         ...sub,
@@ -24,7 +22,6 @@ export async function PUT(
       }));
     }
 
-    // ✅ Update task status
     task.status = body.status;
     await task.save();
 
@@ -38,7 +35,6 @@ export async function PUT(
   }
 }
 
-// ✅ DELETE: Delete a task by ID
 export async function DELETE(
   _: Request,
   { params }: { params: { id: string } }

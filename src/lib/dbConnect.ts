@@ -15,8 +15,8 @@ export default async function dbConnect() {
 
   try {
     await mongoose.connect(MONGODB_URL, {
-      serverSelectionTimeoutMS: 10000, // ⏱️ helps avoid infinite hanging on bad servers
-      socketTimeoutMS: 45000, // ⏱️ extra safety for slow networks
+      serverSelectionTimeoutMS: 10000, // helps avoid infinite hanging on bad servers
+      socketTimeoutMS: 45000, // extra safety for slow networks
     });
     console.log("MongoDB connected successfully");
   } catch (error) {

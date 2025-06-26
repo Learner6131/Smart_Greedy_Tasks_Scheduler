@@ -1,9 +1,8 @@
-// models/DailySchedule.ts
 import mongoose, { Schema } from "mongoose";
 
 const DailyScheduleSchema = new Schema({
   userID: { type: String, required: true },
-  date: { type: String, required: true }, // e.g., '2025-06-25'
+  date: { type: String, required: true },
   subtasks: [
     {
       taskID: String,

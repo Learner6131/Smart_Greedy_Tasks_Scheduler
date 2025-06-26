@@ -22,4 +22,3 @@ const TaskSchema = new Schema({
 });
 
 export default mongoose.models.Task || mongoose.model("Task", TaskSchema);
-// This code defines a Mongoose schema for a Task model, which includes fields for task details

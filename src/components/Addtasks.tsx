@@ -55,7 +55,6 @@ export default function ProfileForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Handle form submission
     const taskData = {
       taskname: values.taskname,
       deadline: values.deadline,
@@ -64,7 +63,6 @@ export default function ProfileForm() {
       description: values.description,
     };
 
-    //make the form empty after submission
     form.reset({
       taskname: "",
       deadline: new Date(),
@@ -78,12 +76,6 @@ export default function ProfileForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-
-    // const data = await res.json();
-    console.log("tasks added successfully!");
-
-    // Here you can handle the task data, e.g., send it to an API or save it in state
-    //console.log("Task Data:", taskData);
   }
 
   return (

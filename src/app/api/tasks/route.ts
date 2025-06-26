@@ -84,10 +84,6 @@ Return only valid JSON. Do NOT wrap the output in triple backticks or Markdown. 
       { status: 500 }
     );
   }
-  console.log(
-    "##############################################################################Task created successfully:"
-  );
-
   await task.save();
 
   return NextResponse.json(task, { status: 201 });
@@ -102,16 +98,10 @@ export async function GET() {
       redirect("/sign-in");
       throw new Error("Use not Signed-in");
     }
-    console.log(
-      "finding taks ##############################################################"
-    );
-    console.log("Clerck Id", clerkUser.id);
+
     const tasks = await Task.find({ userID: clerkUser.id });
-    console.log(
-      "tasks found : ######################################################",
-      tasks
-    );
-    return NextResponse.json(tasks); // ✅ returns an array
+
+    return NextResponse.json(tasks);
   } catch (error) {
     console.error("GET /api/tasks error:", error);
     return NextResponse.json(

@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+
 function Dashboard() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [expandedTaskIds, setExpandedTaskIds] = useState<string[]>([]);
@@ -35,7 +36,7 @@ function Dashboard() {
       setLoading(false);
     } catch (err) {
       console.error("Failed to fetch tasks:", err);
-      setTasks([]); // fallback to empty list
+      setTasks([]);
     }
   };
 
@@ -62,21 +63,17 @@ function Dashboard() {
     currentStatus: string
   ) => {
     const newStatus = currentStatus === "completed" ? "pending" : "completed";
-    console.log("calling put for subtasks");
     await fetch(`/api/tasks/${task._id}/subtasks/${subtaskID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subtaskstatus: newStatus }),
     });
-    console.log("calling put subtasks done");
     fetchTasks();
   };
 
-  const toggleExpand = (taskId: string) => {
+  const toggleExpand = (_id: string) => {
     setExpandedTaskIds((prev) =>
-      prev.includes(taskId)
-        ? prev.filter((id) => id !== taskId)
-        : [...prev, taskId]
+      prev.includes(_id) ? prev.filter((id) => id !== _id) : [...prev, _id]
     );
   };
 
@@ -178,11 +175,11 @@ function Dashboard() {
                     <CheckIcon />
                   </button>
                   <button
-                    onClick={() => toggleExpand(task.userID)}
+                    onClick={() => toggleExpand(task._id)}
                     title="Expand Subtasks"
                     className="text-xl text-blue-500 hover:scale-110 transition"
                   >
-                    {expandedTaskIds.includes(task.userID) ? (
+                    {expandedTaskIds.includes(task._id) ? (
                       <KeyboardArrowDownIcon />
                     ) : (
                       <KeyboardArrowRightIcon />
@@ -198,8 +195,7 @@ function Dashboard() {
                 </div>
               </div>
 
-              {/* Subtasks */}
-              {expandedTaskIds.includes(task.userID) && (
+              {expandedTaskIds.includes(task._id) && (
                 <div className="mt-4 border-t pt-4">
                   <h3 className="font-medium mb-2 text-gray-800">
                     <TaskAltIcon /> Subtasks:
@@ -236,7 +232,7 @@ function Dashboard() {
                               sub.subtaskstatus
                             )} hover:scale-110 transition`}
                           >
-                            ✅
+                            <CheckIcon />
                           </button>
                           <button
                             onClick={() =>
@@ -245,7 +241,7 @@ function Dashboard() {
                             title="Delete Subtask"
                             className="text-xl text-red-500 hover:scale-110 transition"
                           >
-                            🗑️
+                            <DeleteIcon />
                           </button>
                         </div>
                       </div>
