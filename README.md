@@ -9,8 +9,6 @@ An intelligent task scheduling application that uses machine learning to generat
 - **AI-Driven Planning**: Leverages a custom LLM integration to generate an optimal set of subtasks for the day.
 - **Adaptive Rescheduling**: Automatically updates today’s plan when tasks are completed early or delayed.
 - **Priority & Deadline Aware**: Considers task priority levels and upcoming deadlines to allocate time slots.
-- **User Feedback Loop**: Learns from user interactions to improve future recommendations.
-- **Offline Cache**: Caches the daily schedule locally so the plan persists across reloads.
 - **Manual Regeneration**: One-click regeneration of today’s schedule for testing or rebalancing.
 
 ## 📦 Tech Stack
