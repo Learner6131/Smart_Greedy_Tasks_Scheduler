@@ -27,6 +27,7 @@ export type Subtask = {
 };
 
 export type TaskType = {
+  _id: string;
   userID: string;
   taskname: string;
   deadline: Date;

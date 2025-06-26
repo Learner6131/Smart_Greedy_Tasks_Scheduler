@@ -94,9 +94,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string; subtaskID: string }> }
 ) {
   try {
+    console.log("calling PUT");
     await dbConnect();
     const { id, subtaskID } = await params; // await params from context
     const { subtaskstatus } = await req.json();
+
     const task = await Task.findById(id);
     if (!task)
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -108,7 +110,22 @@ export async function PUT(
     if (!subtask)
       return NextResponse.json({ error: "Subtask not found" }, { status: 404 });
 
+    console.log("got the subtask", subtask);
+
     subtask.subtaskstatus = subtaskstatus;
+    if (subtaskstatus === "completed") {
+      task.workedDuration += subtask.subtaskduration;
+      task.remainingDuration = task.duration - task.workedDuration;
+    } else {
+      task.workedDuration -= subtask.subtaskduration;
+      task.remainingDuration = task.duration - task.workedDuration;
+    }
+    task.workedDuration = Math.max(
+      0,
+      Math.min(task.workedDuration, task.duration)
+    );
+
+    console.log("set the worked duration", task.workedDuration);
 
     const allCompleted = task.subtasks.every(
       (s: Subtask) => s.subtaskstatus === "completed"
@@ -121,7 +138,14 @@ export async function PUT(
       ? "ongoing"
       : "pending";
 
+    console.log("tasks status", task.status);
+
+    if (allCompleted) {
+      task.workedDuration = task.duration;
+    }
+
     await task.save();
+    console.log("task saved");
     return NextResponse.json(task);
   } catch (error) {
     if (error instanceof Error) {

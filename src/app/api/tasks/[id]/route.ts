@@ -1,6 +1,7 @@
 import Task from "@/models/task";
 import dbConnect from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
+import { Subtask } from "@/types/types";
 
 // ✅ PUT: Update task status and sync subtasks
 export async function PUT(
@@ -17,8 +18,8 @@ export async function PUT(
 
     // ✅ If task is marked as completed, mark all subtasks as completed too
     if (body.status === "completed") {
-      task.subtasks = task.subtasks.map((sub: any) => ({
-        ...sub.toObject(),
+      task.subtasks = task.subtasks.map((sub: Subtask) => ({
+        ...sub,
         subtaskstatus: "completed",
       }));
     }
